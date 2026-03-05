@@ -1,0 +1,24 @@
+services:
+  - type: cron
+    name: leetcode-monitor
+    runtime: python
+    schedule: "0 9 * * *"        # runs every day at 09:00 UTC
+    buildCommand: pip install -r requirements.txt
+    startCommand: python monitor.py
+    envVars:
+      - key: GMAIL_USER
+        sync: false               # set in Render dashboard
+      - key: GMAIL_PASSWORD
+        sync: false               # Gmail App Password – set in Render dashboard
+      - key: SENDER_NAME
+        value: "LeetCode Monitor"
+      - key: WARN_DAYS
+        value: "3"
+      - key: UNAME_FILE
+        value: "uname.txt"
+      - key: DB_FILE
+        value: "data/progress.json"
+    disk:
+      name: monitor-data
+        mountPath: /opt/render/project/src/data
+        sizeGB: 1
